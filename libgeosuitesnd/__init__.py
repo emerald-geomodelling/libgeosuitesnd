@@ -14,10 +14,10 @@ import logging
 
 logger = logging.getLogger(__name__)
 
-snd_columns_by_method = {7:['depth', 'feed_force', 'pore_pressure', 'friction', 'pressure', 'resistivity'],
-                25:['depth', 'feed_force', 'interval', 'pumping_rate'],
-                26:['depth', 'feed_force', 'interval', 'pumping_rate'],
-                23:['depth', 'feed_force']}
+snd_columns_by_method = {7:['depth', 'feed_trust_force', 'pore_pressure', 'friction', 'pressure', 'resistivity'],
+                25:['depth', 'feed_trust_force', 'interval', 'pumping_rate'],
+                26:['depth', 'feed_trust_force', 'interval', 'pumping_rate'],
+                23:['depth', 'feed_trust_force']}
 
 method_by_code = {
     22: 'simple',
@@ -100,13 +100,13 @@ def parse_string_data_column(df_data, raw_data_nestedlist,n_data_col):
     string_data = [x[n_data_col:] for x in raw_data_nestedlist]
     flushing = np.zeros(len(string_data), dtype=np.int)
     extra_spin = np.zeros(len(string_data), dtype=np.int)
-    hammering = np.zeros(len(string_data), dtype=np.int)
+    ramming = np.zeros(len(string_data), dtype=np.int)
     pumping = np.zeros(len(string_data), dtype=np.int)
     comments = []
 
     flushing_state = 0
     okt_rotasjon_state = 0
-    hammering_state = 0
+    ramming_state = 0
     pumping_state = 0
 
     for count, string in enumerate(string_data):
@@ -127,18 +127,18 @@ def parse_string_data_column(df_data, raw_data_nestedlist,n_data_col):
             string.remove('y2')
 
         if 'S1' in string:
-            hammering_state  = 1
+            ramming_state  = 1
             string.remove('S1')
         elif 'S2' in string:
-            hammering_state = 0
+            ramming_state = 0
             string.remove('S2')
 
         if 'D1' in string:
-            hammering_state  = 1
+            ramming_state  = 1
             flushing_state = 1
             string.remove('D1')
         elif 'D2' in string:
-            hammering_state = 0
+            ramming_state = 0
             flushing_state = 0
             string.remove('D2')
 
@@ -170,18 +170,18 @@ def parse_string_data_column(df_data, raw_data_nestedlist,n_data_col):
             string.remove('73')
 
         if '74' in string:
-            hammering_state  = 1
+            ramming_state  = 1
             string.remove('74')
         elif '75' in string:
-            hammering_state = 0
+            ramming_state = 0
             string.remove('75')
 
         if '76' in string:
-            hammering_state  = 1
+            ramming_state  = 1
             flushing_state = 1
             string.remove('76')
         elif '77' in string:
-            hammering_state = 0
+            ramming_state = 0
             flushing_state = 0
             string.remove('77')
 
@@ -199,13 +199,13 @@ def parse_string_data_column(df_data, raw_data_nestedlist,n_data_col):
 
         flushing[count] = flushing_state
         extra_spin[count] = okt_rotasjon_state
-        hammering[count] = hammering_state
+        ramming[count] = ramming_state
         pumping[count]=pumping_state
         comments.append(' '.join(string))
 
     df_data.loc[:, 'flushing'] = flushing
     df_data.loc[:, 'extra_spin'] = extra_spin
-    df_data.loc[:, 'hammering'] = hammering
+    df_data.loc[:, 'ramming'] = ramming
     df_data.loc[:, 'pumping'] = pumping
     df_data.loc[:, 'comments'] = comments
 
@@ -276,20 +276,22 @@ def parse(input_filename, borehole_id=None):
         df_data, depth_increment, depth_bedrock = parse_borehole_data(data, method_code, asterisk_lines, asterisk_line_idx, input_filename)
 
         res.append({
-            "method_code": method_code,
-            "method_name": method_name,
-            "day": day,
-            "month": month,
-            "year": year,
-            "date": date,
-            "stop_code": stop_code,
-            "stop_desc": stop_desc,
+            "main": {
+                "method_code": method_code,
+                "method_name": method_name,
+                "day": day,
+                "month": month,
+                "year": year,
+                "date": date,
+                "stop_code": stop_code,
+                "stop_desc": stop_desc,
+                "depth_increment": depth_increment,
+                "depth_bedrock": depth_bedrock,
+                "x": x,
+                "y": y,
+                "z": z
+            },
             "data": df_data,
-            "depth_increment": depth_increment,
-            "depth_bedrock": depth_bedrock,
-            "x": x,
-            "y": y,
-            "z": z
         })
 
     return res
