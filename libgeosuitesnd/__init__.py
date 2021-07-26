@@ -245,11 +245,17 @@ def parse_borehole_data(data, method_code, asterisk_lines,asterisk_line_idx, inp
 def parse(input_filename, borehole_id=None):
     if borehole_id is None:
         borehole_id = input_filename.split("/")[-1].split(".", 1)[0]
-    
-    with open(input_filename, "rb") as f:
+
+    def load(f):
         f=codecs.getreader('utf8')(f, errors='ignore')
         data = f.readlines()
-        data = [l.strip() for l in data]
+        return [l.strip() for l in data]
+        
+    if isinstance(input_filename, str):
+        with open(input_filename, "rb") as f:
+            data = load(f)
+    else:
+        data = load(input_filename)
 
     x, y, z, asterisk_lines = parse_coordinates_asterisk_lines(data)
 
@@ -260,6 +266,11 @@ def parse(input_filename, borehole_id=None):
         logger.info(borehole_id + ': number of asterisk lines in file = ' + str(len(asterisk_lines)))
         logger.info('Skipping file: %s - file is missing final asterisk and may be corrupt' % borehole_id)
 
+    # The E16 Nybakk-Slomarka project is a bit weird because old holes have separate SND files for Total and rotary
+    # pressure soundings, whereas newer holes sometimes merge these into the same file. Some CPT files also are
+    # missing a few header lines that contain a global ID of some sort. I think the best method here is to check if
+    # the second line after an asterisk starts with a 1. If so, it means this is a block of text with data
+    
     res = []
     for asterisk_line_idx, asterisk in enumerate(asterisk_lines):
         depth_increment = None
@@ -276,7 +287,7 @@ def parse(input_filename, borehole_id=None):
         df_data, depth_increment, depth_bedrock = parse_borehole_data(data, method_code, asterisk_lines, asterisk_line_idx, input_filename)
 
         res.append({
-            "main": {
+            "main": [{
                 "method_code": method_code,
                 "method_name": method_name,
                 "day": day,
@@ -287,10 +298,10 @@ def parse(input_filename, borehole_id=None):
                 "stop_desc": stop_desc,
                 "depth_increment": depth_increment,
                 "depth_bedrock": depth_bedrock,
-                "x": x,
-                "y": y,
-                "z": z
-            },
+                "x_coordinate": x,
+                "y_coordinate": y,
+                "z_coordinate": z
+            }],
             "data": df_data,
         })
 
