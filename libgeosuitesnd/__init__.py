@@ -300,7 +300,8 @@ def parse(input_filename, borehole_id=None):
                 "depth_bedrock": depth_bedrock,
                 "x_coordinate": x,
                 "y_coordinate": y,
-                "z_coordinate": z
+                "z_coordinate": z,
+                "investigation_point": borehole_id
             }],
             "data": df_data,
         })
