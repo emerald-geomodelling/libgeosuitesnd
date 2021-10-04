@@ -40,3 +40,31 @@ renamed/transformed) save the loaded data as an SGF file.
   
   [1331 rows x 7 columns]}]
 ```
+
+# Static metadata
+For each of the enumerated value types - method_code and stop_code, there is a pandas dataframe that translates between the numerical values used
+in the file, and the libsgfdata compatible names:
+
+```
+>>> libgeosuitesnd.methods
+               name                                            columns                                            comment
+code                                                                                                                     
+7               cpt  depth,feed_trust_force,pore_pressure,friction,...                                                NaN
+21           rotary                                                NaN                                                NaN
+22           simple                                                NaN                                                NaN
+23              rps                             depth,feed_trust_force                                                NaN
+25            total       depth,feed_trust_force,interval,pumping_rate                                                NaN
+26    rock_drilling       depth,feed_trust_force,interval,pumping_rate  rock_drilling is an older version a total soun...
+
+>>> libgeosuitesnd.stop_reasons
+                                name
+code                                
+90    drilling_abandoned_prematurely
+91        abandoned_hit_hard_surface
+92               assumed_hit_boulder
+93                   assumed_bedrock
+94                   reached_bedrock
+95                      broken_drill
+96                       other_fault
+97                drilling_abandoned
+```
