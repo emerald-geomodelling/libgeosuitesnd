@@ -1,0 +1,9 @@
+code,name
+90,drilling_abandoned_prematurely
+91,abandoned_hit_hard_surface
+92,assumed_hit_boulder
+93,assumed_bedrock
+94,reached_bedrock
+95,broken_drill
+96,other_fault
+97,drilling_abandoned

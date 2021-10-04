@@ -11,36 +11,27 @@ import codecs
 import os
 import io
 import logging
+import pkg_resources
 
 logger = logging.getLogger(__name__)
 
-snd_columns_by_method = {7:['depth', 'feed_trust_force', 'pore_pressure', 'friction', 'pressure', 'resistivity'],
-                25:['depth', 'feed_trust_force', 'interval', 'pumping_rate'],
-                26:['depth', 'feed_trust_force', 'interval', 'pumping_rate'],
-                23:['depth', 'feed_trust_force']}
+na_values = ['', '#N/A', '#N/A N/A', '#NA', '-1.#IND', '-1.#QNAN', '-NaN', '-nan',
+             '1.#IND', '1.#QNAN', '<NA>', 'N/A', 'NULL', 'NaN', 'n/a', 'nan', 'null']
 
-method_by_code = {
-    22: 'simple',
-    21: 'rotary',
-    23: 'rps',
-    25: 'total',
-     7: 'cpt',
-    # rock_drilling is an older version a total sounding,
-    # that doesn't have feedforce on the way down
-    26: 'rock_drilling'
-}
-stop_reason_by_code = {
-    90: 'drilling_abandoned_prematurely',
-    91: 'abandoned_hit_hard_surface',
-    92: 'assumed_hit_boulder',
-    93: 'assumed_bedrock',
-    94: 'reached_bedrock',
-    95: 'broken_drill',
-    96: 'other_fault',
-    97: 'drilling_abandoned'
-}
+def _read_csv(f):
+    return pd.read_csv(f, na_values=na_values, keep_default_na=False).set_index("code")
 
-method_by_name = {v:k for k,v in method_by_code.items()}
+
+with pkg_resources.resource_stream("libgeosuitesnd", "methods.csv") as f:
+    methods = _read_csv(f)
+    method_by_code = methods["name"]
+with pkg_resources.resource_stream("libgeosuitesnd", "stop_reasons.csv") as f:
+    stop_reasons = _read_csv(f)
+    stop_reason_by_code = stop_reasons["name"]
+
+snd_columns_by_method = {key: value.split(",") for key, value in methods["columns"].to_dict().items() if isinstance(value, str)}
+
+#method_by_name = {v:k for k,v in method_by_code.items()}
 stop_reason_by_name = {value:key for key, value in stop_reason_by_code.items()}
 
 
@@ -226,7 +217,7 @@ def parse_borehole_data(data, method_code, asterisk_lines,asterisk_line_idx, inp
 
         depth_increment = df_data.depth[1] - df_data.depth[0] #todo: depth increment not being properly read for CPT data
 
-        if method_code in [23, 25]:
+        if method_code in ["rps","total"]:
             df_data, depth_bedrock = parse_string_data_column(df_data, raw_data_nestedlist, n_data_col)
 
 

@@ -13,6 +13,8 @@ setuptools.setup(
     author_email='em@emeraldgeo.no, cch@emeraldgeo.no',
     url='https://github.com/emerald-geomodelling/libgeosuitesnd',
     packages=setuptools.find_packages(),
+    include_package_data=True,
+    package_data={'libgeosuitesnd': ['*/*.csv']},
     install_requires=[
         "numpy",
         "pandas",
