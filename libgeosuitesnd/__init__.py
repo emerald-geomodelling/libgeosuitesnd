@@ -63,11 +63,7 @@ def parse_header_information(data, asterisk, borehole_id):
     except Exception:
         logger.info(borehole_id + ': method code not valid')
         method_name = None
-    try:
-        method_name = method_by_code[method_code]
-    except Exception:
-        logger.info(borehole_id + ': method code value not recognized')
-        method_name = None
+    method_name = method_by_code.get(method_code, "geosuitesnd_%s" % method_code)
 
     try:
         date_components = header00[1].split('.')
@@ -87,11 +83,7 @@ def parse_header_information(data, asterisk, borehole_id):
     except Exception:
         logger.info(borehole_id + ': Something went wrong reading stop code')
         stop_code = None
-    try:
-        stop_desc = stop_reason_by_code[stop_code]
-    except Exception:
-        logger.info(borehole_id + ': Stop code not recognized')
-        stop_desc = None
+    stop_desc = stop_reason_by_code.get(stop_code, "geosuitesnd_%s" % stop_code)
     return method_code, method_name, day, month, year, date, stop_code, stop_desc
 
 def parse_string_data_column(df_data, raw_data_nestedlist,n_data_col):
@@ -288,14 +280,14 @@ def parse(input_filename, borehole_id=None):
 
         res.append({
             "main": [{
-                "method_code": method_code,
-                "method_name": method_name,
+                "method_code": method_name,
+                "method_code_orig": method_code,
                 "day": day,
                 "month": month,
                 "year": year,
                 "date": date,
-                "stop_code": stop_code,
-                "stop_desc": stop_desc,
+                "stop_code": stop_desc,
+                "stop_code_orig": stop_code,
                 "depth_increment": depth_increment,
                 "depth_bedrock": depth_bedrock,
                 "x_coordinate": x,
