@@ -84,8 +84,6 @@ def parse_string_data_column(df_data, raw_data_nestedlist,n_data_col):
 
     string_data = [x[n_data_col:] for x in raw_data_nestedlist]
 
-    state = {}
-
     df_data["comments"] = ""
     
     for count, string in enumerate(string_data):
@@ -93,18 +91,22 @@ def parse_string_data_column(df_data, raw_data_nestedlist,n_data_col):
         for flag in string:
             if flag in flags.index:
                 line_flags[flags.loc[flag]["name"]] = flags.loc[flag]["value"]
-        state.update(line_flags)
 
         if line_flags.get("depth_bedrock", 0) and depth_bedrock is None:
             depth_bedrock = df_data.depth[count]
 
-        for key, value in state.items():
-            if key not in df_data.columns:
-                df_data[key] = 0
-            df_data.loc[count, key] = value
+        for key, value in line_flags.items():
+            if key != "depth_bedrock":
+                if key not in df_data.columns:
+                    df_data[key] = -1
+                df_data.loc[count, key] = value
 
         df_data.loc[count, "comments"] = ' '.join(string)
 
+    for flag in flags["name"].unique():
+        df_data[flag].replace(to_replace=-1, method='ffill', inplace=True)
+        df_data.loc[df_data[flag] == -1, flag] = 0
+        
     return df_data, depth_bedrock
 
 def parse_borehole_data(data, method_code, asterisk_lines,asterisk_line_idx, input_filename):
@@ -133,7 +135,7 @@ def parse_borehole_data(data, method_code, asterisk_lines,asterisk_line_idx, inp
         method_flags = methods.loc[method_code, "flags"]
         if method_flags:
             for flag in method_flags.split(","):
-                df_data[flag] = 0
+                df_data[flag] = -1
         df_data, depth_bedrock = parse_string_data_column(df_data, raw_data_nestedlist, n_data_col)
 
 
