@@ -105,10 +105,6 @@ def parse_string_data_column(df_data, raw_data_nestedlist,n_data_col):
 
         df_data.loc[count, "comments"] = ' '.join(string)
 
-    for flag in flags.name.unique():
-        if np.all(df_data[flag] == 0):
-            df_data.drop(columns=[flag], inplace=True)
-    
     return df_data, depth_bedrock
 
 def parse_borehole_data(data, method_code, asterisk_lines,asterisk_line_idx, input_filename):
