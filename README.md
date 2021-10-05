@@ -47,14 +47,13 @@ in the file, and the libsgfdata compatible names:
 
 ```
 >>> libgeosuitesnd.methods
-               name                                            columns                                            comment
-code                                                                                                                     
-7               cpt  depth,feed_trust_force,pore_pressure,friction,...                                                NaN
-21           rotary                                                NaN                                                NaN
-22           simple                                                NaN                                                NaN
-23              rps                             depth,feed_trust_force                                                NaN
-25            total       depth,feed_trust_force,interval,pumping_rate                                                NaN
-26    rock_drilling       depth,feed_trust_force,interval,pumping_rate  rock_drilling is an older version a total soun...
+        name                                            columns                                flags comment
+code                                                                                                        
+7        cpt  depth,feed_trust_force,pore_pressure,friction,...                                  NaN     NaN
+21    rotary                                                NaN                                  NaN     NaN
+22    simple                                                NaN                                  NaN     NaN
+23       rps                             depth,feed_trust_force  extra_spin,flushing,pumping,ramming     NaN
+25     total       depth,feed_trust_force,interval,pumping_rate  extra_spin,flushing,pumping,ramming     NaN
 
 >>> libgeosuitesnd.stop_reasons
                                 name
@@ -67,4 +66,14 @@ code
 95                      broken_drill
 96                       other_fault
 97                drilling_abandoned
+
+>>> libgeosuitesnd.flags
+            name  value
+code                   
+R1    extra_spin      1
+R2    extra_spin      0
+y1      flushing      1
+y2      flushing      0
+S1       ramming      1
 ```
+
