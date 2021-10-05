@@ -28,6 +28,8 @@ with pkg_resources.resource_stream("libgeosuitesnd", "methods.csv") as f:
 with pkg_resources.resource_stream("libgeosuitesnd", "stop_reasons.csv") as f:
     stop_reasons = _read_csv(f)
     stop_reason_by_code = stop_reasons["name"]
+with pkg_resources.resource_stream("libgeosuitesnd", "flags.csv") as f:
+    flags = _read_csv(f)
 
 snd_columns_by_method = {key: value.split(",") for key, value in methods["columns"].to_dict().items() if isinstance(value, str)}
 
@@ -81,117 +83,32 @@ def parse_string_data_column(df_data, raw_data_nestedlist,n_data_col):
     depth_bedrock = None
 
     string_data = [x[n_data_col:] for x in raw_data_nestedlist]
-    flushing = np.zeros(len(string_data), dtype=np.int)
-    extra_spin = np.zeros(len(string_data), dtype=np.int)
-    ramming = np.zeros(len(string_data), dtype=np.int)
-    pumping = np.zeros(len(string_data), dtype=np.int)
-    comments = []
 
-    flushing_state = 0
-    okt_rotasjon_state = 0
-    ramming_state = 0
-    pumping_state = 0
+    state = {}
 
+    df_data["comments"] = ""
+    
     for count, string in enumerate(string_data):
+        line_flags = {}
+        for flag in string:
+            if flag in flags.index:
+                line_flags[flags.loc[flag]["name"]] = flags.loc[flag]["value"]
+        state.update(line_flags)
 
-        #check for the letter version of the codes
-        if 'R1' in string:
-            okt_rotasjon_state = 1
-            string.remove('R1')
-        elif 'R2' in string:
-            okt_rotasjon_state = 0
-            string.remove('R2')
+        if line_flags.get("depth_bedrock", 0) and depth_bedrock is None:
+            depth_bedrock = df_data.depth[count]
 
-        if 'y1' in string:
-            flushing_state = 1
-            string.remove('y1')
-        elif 'y2' in string:
-            flushing_state = 0
-            string.remove('y2')
+        for key, value in state.items():
+            if key not in df_data.columns:
+                df_data[key] = 0
+            df_data.loc[count, key] = value
 
-        if 'S1' in string:
-            ramming_state  = 1
-            string.remove('S1')
-        elif 'S2' in string:
-            ramming_state = 0
-            string.remove('S2')
+        df_data.loc[count, "comments"] = ' '.join(string)
 
-        if 'D1' in string:
-            ramming_state  = 1
-            flushing_state = 1
-            string.remove('D1')
-        elif 'D2' in string:
-            ramming_state = 0
-            flushing_state = 0
-            string.remove('D2')
-
-        if 'P1' in string:
-            pumping_state  = 1
-            string.remove('P1')
-        elif 'P2' in string:
-            pumping_state= 0
-            string.remove('P2')
-
-        if 'F' in string:
-            if depth_bedrock is None:
-                depth_bedrock = df_data.depth[count]
-            string.remove('F')
-
-        # check for the number version of the codes
-        if '70' in string:
-            okt_rotasjon_state = 1
-            string.remove('70')
-        elif '71' in string:
-            okt_rotasjon_state = 0
-            string.remove('71')
-
-        if '72' in string:
-            flushing_state = 1
-            string.remove('72')
-        elif '73' in string:
-            flushing_state = 0
-            string.remove('73')
-
-        if '74' in string:
-            ramming_state  = 1
-            string.remove('74')
-        elif '75' in string:
-            ramming_state = 0
-            string.remove('75')
-
-        if '76' in string:
-            ramming_state  = 1
-            flushing_state = 1
-            string.remove('76')
-        elif '77' in string:
-            ramming_state = 0
-            flushing_state = 0
-            string.remove('77')
-
-        if '78' in string:
-            pumping_state  = 1
-            string.remove('78')
-        elif '79' in string:
-            pumping_state= 0
-            string.remove('79')
-
-        if '43' in string:
-            if depth_bedrock is None:
-                depth_bedrock = df_data.depth[count]
-            string.remove('43')
-
-        flushing[count] = flushing_state
-        extra_spin[count] = okt_rotasjon_state
-        ramming[count] = ramming_state
-        pumping[count]=pumping_state
-        comments.append(' '.join(string))
-
-    df_data.loc[:, 'flushing'] = flushing
-    df_data.loc[:, 'extra_spin'] = extra_spin
-    df_data.loc[:, 'ramming'] = ramming
-    df_data.loc[:, 'pumping'] = pumping
-    df_data.loc[:, 'comments'] = comments
-
+    for flag in flags.name.unique():
+        if np.all(df_data[flag] == 0):
+            df_data.drop(columns=[flag], inplace=True)
+    
     return df_data, depth_bedrock
 
 def parse_borehole_data(data, method_code, asterisk_lines,asterisk_line_idx, input_filename):
@@ -217,8 +134,11 @@ def parse_borehole_data(data, method_code, asterisk_lines,asterisk_line_idx, inp
 
         depth_increment = df_data.depth[1] - df_data.depth[0] #todo: depth increment not being properly read for CPT data
 
-        if method_code in ["rps","total"]:
-            df_data, depth_bedrock = parse_string_data_column(df_data, raw_data_nestedlist, n_data_col)
+        method_flags = methods.loc[method_code, "flags"]
+        if method_flags:
+            for flag in method_flags.split(","):
+                df_data[flag] = 0
+        df_data, depth_bedrock = parse_string_data_column(df_data, raw_data_nestedlist, n_data_col)
 
 
     except Exception:
