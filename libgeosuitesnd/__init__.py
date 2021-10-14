@@ -109,7 +109,7 @@ def parse_string_data_column(df_data, raw_data_nestedlist,n_data_col):
         
     return df_data, depth_bedrock
 
-def parse_borehole_data(data, method_code, asterisk_lines,asterisk_line_idx, input_filename):
+def parse_borehole_data(data, method_code, asterisk_lines,asterisk_line_idx, borehole_id):
     depth_increment = None
     depth_bedrock = None
     line_start = asterisk_lines[asterisk_line_idx] + 3
@@ -140,7 +140,7 @@ def parse_borehole_data(data, method_code, asterisk_lines,asterisk_line_idx, inp
 
 
     except Exception:
-        logger.info(input_filename, 'No data extracted for text block ' + str(asterisk_line_idx))
+        logger.info(borehole_id + ': No data extracted for text block ' + str(asterisk_line_idx))
     return df_data, depth_increment, depth_bedrock
 
 def parse(input_filename, borehole_id=None):
@@ -185,7 +185,7 @@ def parse(input_filename, borehole_id=None):
 
         # If so, parse information from the header lines before the data.
         method_code, method_name, day, month, year, date, stop_code, stop_desc = parse_header_information(data, asterisk, borehole_id)
-        df_data, depth_increment, depth_bedrock = parse_borehole_data(data, method_code, asterisk_lines, asterisk_line_idx, input_filename)
+        df_data, depth_increment, depth_bedrock = parse_borehole_data(data, method_code, asterisk_lines, asterisk_line_idx, borehole_id)
 
         res.append({
             "main": [{
