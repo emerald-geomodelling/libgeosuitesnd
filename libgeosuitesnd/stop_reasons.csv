@@ -1,9 +1,9 @@
 code,name
-90,drilling_abandoned_prematurely
-91,abandoned_hit_hard_surface
-92,assumed_hit_boulder
-93,assumed_bedrock
-94,reached_bedrock
-95,broken_drill
-96,other_fault
-97,drilling_abandoned
+90,interrupted_without_stop
+91,cannot_drive_further
+92,stop_against_stone_or_block
+93,stop_against_stone_block_or_rock
+94,stop_against_presumed_rock
+95,soil_rock_sounding_interrupted
+96,predetermined_depth
+97,max_capacity
