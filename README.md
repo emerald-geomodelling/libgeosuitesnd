@@ -14,7 +14,8 @@ renamed/transformed) save the loaded data as an SGF file.
 # Usage
 
 ```
->>> data = libgeosuitesnd.parse("SOMEFILE.SND" )
+>>> data = libgeosuitesnd.parse("SOMEFILE.SND")
+>>> data
 [{'main': [{'method_code': 23,
             'method_name': 'rps',
             'day': 23,
