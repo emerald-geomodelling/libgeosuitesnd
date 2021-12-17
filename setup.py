@@ -5,7 +5,7 @@ import os
 
 setuptools.setup(
     name='libgeosuitesnd',
-    version='0.0.5',
+    version='0.0.6',
     description='Parser for the GeoSuite<tm> SND export format',
     long_description="""Parser for the GeoSuite<tm> SND export format""",
     long_description_content_type="text/markdown",
@@ -19,4 +19,7 @@ setuptools.setup(
         "numpy",
         "pandas",
     ],
+    entry_points = {
+        'libsgfdata.parsers': ['snd=libgeosuitesnd:parse'],
+    }
 )

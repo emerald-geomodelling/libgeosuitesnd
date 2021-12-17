@@ -140,12 +140,13 @@ def parse_borehole_data(data, method_code, asterisk_lines,asterisk_line_idx, bor
 
 
     except Exception:
-        logger.info(borehole_id + ': No data extracted for text block ' + str(asterisk_line_idx))
+        logger.info('%s: No data extracted for text block %s' % (borehole_id, asterisk_line_idx))
     return df_data, depth_increment, depth_bedrock
 
 def parse(input_filename, borehole_id=None):
     if borehole_id is None:
-        borehole_id = input_filename.split("/")[-1].split(".", 1)[0]
+        if isinstance(input_filename, str):
+            borehole_id = input_filename.split("/")[-1].split(".", 1)[0]
 
     def load(f):
         f=codecs.getreader('utf8')(f, errors='ignore')
@@ -161,10 +162,10 @@ def parse(input_filename, borehole_id=None):
     x, y, z, asterisk_lines = parse_coordinates_asterisk_lines(data)
 
     if not len(asterisk_lines) == 4:
-        logger.info(borehole_id + ': number of asterisk lines in file = ' + str(len(asterisk_lines)))
+        logger.info('%s: number of asterisk lines in file = %s' % (borehole_id, len(asterisk_lines)))
 
     if len(asterisk_lines) < 4:
-        logger.info(borehole_id + ': number of asterisk lines in file = ' + str(len(asterisk_lines)))
+        logger.info('%s: number of asterisk lines in file = ' % (borehole_id, len(asterisk_lines)))
         logger.info('Skipping file: %s - file is missing final asterisk and may be corrupt' % borehole_id)
 
     # The E16 Nybakk-Slomarka project is a bit weird because old holes have separate SND files for Total and rotary
