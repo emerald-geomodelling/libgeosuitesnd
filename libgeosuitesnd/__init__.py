@@ -203,7 +203,8 @@ def parse(input_filename, borehole_id=None):
                 "x_coordinate": x,
                 "y_coordinate": y,
                 "z_coordinate": z,
-                "investigation_point": borehole_id
+                "investigation_point": borehole_id,
+                "input_filename": input_filename.name
             }],
             "data": df_data,
         })
