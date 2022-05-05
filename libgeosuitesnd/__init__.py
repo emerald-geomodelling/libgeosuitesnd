@@ -165,7 +165,7 @@ def parse(input_filename, borehole_id=None):
         logger.info('%s: number of asterisk lines in file = %s' % (borehole_id, len(asterisk_lines)))
 
     if len(asterisk_lines) < 4:
-        logger.info('%s: number of asterisk lines in file = ' % (borehole_id, len(asterisk_lines)))
+        logger.info('%s : number of asterisk lines in file = %s' % (borehole_id, len(asterisk_lines)))
         logger.info('Skipping file: %s - file is missing final asterisk and may be corrupt' % borehole_id)
 
     # The E16 Nybakk-Slomarka project is a bit weird because old holes have separate SND files for Total and rotary
