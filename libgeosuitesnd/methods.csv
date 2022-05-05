@@ -2,6 +2,6 @@ code,name,columns,flags,comment
 7,cpt,"depth,feed_trust_force,pore_pressure,friction,pressure,resistivity",,
 21,rotary,,,
 22,simple,,,
-23,rps,"depth,feed_trust_force","extra_spin,flushing,pumping,ramming",
+23,rotary_pressure_sounding,"depth,feed_trust_force","extra_spin,flushing,pumping,ramming",
 25,total,"depth,feed_trust_force,interval,pumping_rate","extra_spin,flushing,pumping,ramming",
 26,rock_drilling,"depth,feed_trust_force,interval,pumping_rate",,"rock_drilling is an older version a total sounding that doesnt have feedforce on the way down"
