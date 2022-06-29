@@ -166,7 +166,7 @@ def parse(input_filename, borehole_id=None):
 
     if len(asterisk_lines) < 4:
         logger.info('%s : number of asterisk lines in file = %s' % (borehole_id, len(asterisk_lines)))
-        logger.info('Skipping file: %s - file is missing final asterisk and may be corrupt' % borehole_id)
+        logger.info('%s : file is missing final asterisk and may be corrupt' % borehole_id)
 
     # The E16 Nybakk-Slomarka project is a bit weird because old holes have separate SND files for Total and rotary
     # pressure soundings, whereas newer holes sometimes merge these into the same file. Some CPT files also are
@@ -208,5 +208,16 @@ def parse(input_filename, borehole_id=None):
             }],
             "data": df_data,
         })
+
+    if len(res)<1:
+        res = [{
+            "main": [{
+                "x_coordinate": x,
+                "y_coordinate": y,
+                "z_coordinate": z,
+                "investigation_point": borehole_id,
+                "input_filename": input_filename.name
+            }],
+        }]
 
     return res
