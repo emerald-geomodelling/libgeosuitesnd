@@ -13,7 +13,7 @@ Gy,38,gytje,gyttja
 ,,,
 St,40,"stein, blokk","stone, block"
 B1,41,"stein, blokk eller fjell (gjennomboring)","stone, block, or bedrock (perforation)"
-B2,42,sluttnivå for stein eller blokk (etter gjennomboring),ending lever of stone or block (after perforation)
+B2,42,sluttnivå for stein eller blokk (etter gjennomboring),ending level of stone or block (after perforation)
 F,43,fjell,bedrock
 ,,,
 "@",60,borstangen bøyer seg,drill stem bent
@@ -30,13 +30,13 @@ D2,77,Slag og spyling slutter samtidig,hammering and flushing end simultaneously
 P1,78,Pumping starter,pumping begins
 P2,79,Pumping slutter ,pumping ends
 ,,,
-MY,81,Terrengoverflate, boring i vann,terrain surface, drilling in water
+MY,81,"Terrengoverflate, boring i vann","terrain surface, drilling in water"
 ,,,
 ,90,Avsluttet uten stopp ,aborted without stop 
 ,91,Fast grunn,hard ground 
 ,92,Antatt stein eller blokk,assumed stone or block 
 ,93,Antatt fjell, berg,assumed bedrock 
 ,94,Boret ønsket dybde i fjell,drilled to desired depth in bedrock 
-,95,Brudd i stenger eller spiss,broken rods or drilltip
-,96,Annen feil ,other error 
+,95,Brudd i stenger eller spiss,broken rods or drill tip
+,96,Annen feil,other error
 ,97,Boring avsluttet (årsak notert),drilling aborted (reason noted)
