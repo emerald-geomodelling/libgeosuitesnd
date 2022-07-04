@@ -205,7 +205,7 @@ def parse(input_filename, borehole_id=None):
                 "y_coordinate": y,
                 "z_coordinate": z,
                 "investigation_point": borehole_id,
-                "input_filename": input_filename.name if hasattr('name',input_filename) else input_filename
+                "input_filename": input_filename.name if hasattr(input_filename,'name') else input_filename
             }],
             "data": df_data,
         })
