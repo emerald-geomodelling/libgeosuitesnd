@@ -1,0 +1,42 @@
+﻿text_code,int_code,betydning_norsk,description_english
+,10,stoppkote for tidligere forsøk,stopping elevation of previous attempt
+,11,lengere opphold (mer enn 5 minutter),longer stay (more than 5 minutes)
+Fy,30,fyllemasse,artificial fill
+Tø,31,tørrskorpe,dry crust
+Le,32,leire,clay
+Si,33,silt,silt
+Sa,34,sand,sand
+Gr,35,grus,gravel
+Mo,36,morene,moraine
+To,37,torv,peat
+Gy,38,gytje,gyttja
+,,,
+St,40,stein, blokk,stone, block 
+B1,41,stein, blokk eller fjell (gjennomboring),stone, block, or bedrock (perforation)
+B2,42,sluttnivå for stein eller blokk (etter gjennomboring),ending lever of stone or block (after perforation)
+F,43,fjell,bedrock
+,,,
+"@",60,borstangen bøyer seg,drill stem bent
+GV,61,antatt grunnvannskote,Assumed groundwater level
+,,,
+R1,70,Økt rotasjon begynner,increased rotation begins
+R2,71,Økt rotasjon slutter ,increate rotation ends
+Y1,72,Spyling starter ,flushing begins
+Y2,73,Spyling slutter,flushing ends
+S1,74,Slag starter,hammering begins
+S2,75,Slag slutter,hammering ends
+D1,76,Slag og spyling starter samtidig,hammering and flushing begin simultaneously
+D2,77,Slag og spyling slutter samtidig,hammering and flushing end simultaneously
+P1,78,Pumping starter,pumping begins
+P2,79,Pumping slutter ,pumping ends
+,,,
+MY,81,Terrengoverflate, boring i vann,terrain surface, drilling in water
+,,,
+,90,Avsluttet uten stopp ,aborted without stop 
+,91,Fast grunn,hard ground 
+,92,Antatt stein eller blokk,assumed stone or block 
+,93,Antatt fjell, berg,assumed bedrock 
+,94,Boret ønsket dybde i fjell,drilled to desired depth in bedrock 
+,95,Brudd i stenger eller spiss,broken rods or drilltip
+,96,Annen feil ,other error 
+,97,Boring avsluttet (årsak notert),drilling aborted (reason noted)
