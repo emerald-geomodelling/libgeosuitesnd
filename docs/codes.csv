@@ -11,8 +11,8 @@ Mo,36,morene,moraine
 To,37,torv,peat
 Gy,38,gytje,gyttja
 ,,,
-St,40,stein, blokk,stone, block 
-B1,41,stein, blokk eller fjell (gjennomboring),stone, block, or bedrock (perforation)
+St,40,"stein, blokk","stone, block"
+B1,41,"stein, blokk eller fjell (gjennomboring)","stone, block, or bedrock (perforation)"
 B2,42,sluttnivå for stein eller blokk (etter gjennomboring),ending lever of stone or block (after perforation)
 F,43,fjell,bedrock
 ,,,
