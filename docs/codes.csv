@@ -35,7 +35,7 @@ MY,81,"Terrengoverflate, boring i vann","terrain surface, drilling in water"
 ,90,Avsluttet uten stopp ,aborted without stop 
 ,91,Fast grunn,hard ground 
 ,92,Antatt stein eller blokk,assumed stone or block 
-,93,Antatt fjell, berg,assumed bedrock 
+,93,"Antatt fjell, berg",assumed bedrock
 ,94,Boret ønsket dybde i fjell,drilled to desired depth in bedrock 
 ,95,Brudd i stenger eller spiss,broken rods or drill tip
 ,96,Annen feil,other error
