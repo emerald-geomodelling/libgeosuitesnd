@@ -90,7 +90,12 @@ def parse_string_data_column(df_data, raw_data_nestedlist,n_data_col):
         line_flags = {}
         for flag in string:
             if flag in flags.index:
-                line_flags[flags.loc[flag]["name"]] = flags.loc[flag]["value"]
+                flags_affected = flags.loc[flag]
+                if isinstance(flags_affected, pd.Series):
+                    line_flags[flags_affected['name']] = flags_affected['value']
+                else:
+                    line_flags.update({zip( flags_affected['name'], flags_affected['value'])})
+
 
         if line_flags.get("depth_bedrock", 0) and depth_bedrock is None:
             depth_bedrock = df_data.depth[count]
@@ -141,6 +146,10 @@ def parse_borehole_data(data, method_code, asterisk_lines,asterisk_line_idx, bor
 
 
     except Exception:
+        import sys
+        print(sys.exc_info()[2])
+        import traceback
+        print(traceback.format_exc())
         logger.info('%s: No data extracted for text block %s' % (borehole_id, asterisk_line_idx))
     return df_data, depth_increment, depth_bedrock
 
