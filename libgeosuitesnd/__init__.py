@@ -104,8 +104,9 @@ def parse_string_data_column(df_data, raw_data_nestedlist,n_data_col):
         df_data.loc[count, "comments"] = ' '.join(string)
 
     for flag in flags["name"].unique():
-        df_data[flag].replace(to_replace=-1, method='ffill', inplace=True)
-        df_data.loc[df_data[flag] == -1, flag] = 0
+        if flag != "depth_bedrock":
+            df_data[flag].replace(to_replace=-1, method='ffill', inplace=True)
+            df_data.loc[df_data[flag] == -1, flag] = 0
         
     return df_data, depth_bedrock
 
@@ -204,7 +205,7 @@ def parse(input_filename, borehole_id=None):
                 "y_coordinate": y,
                 "z_coordinate": z,
                 "investigation_point": borehole_id,
-                "input_filename": input_filename.name
+                "input_filename": input_filename.name if hasattr('name',input_filename) else input_filename
             }],
             "data": df_data,
         })
