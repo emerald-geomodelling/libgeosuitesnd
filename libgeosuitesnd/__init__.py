@@ -146,10 +146,6 @@ def parse_borehole_data(data, method_code, asterisk_lines,asterisk_line_idx, bor
 
 
     except Exception:
-        import sys
-        print(sys.exc_info()[2])
-        import traceback
-        print(traceback.format_exc())
         logger.info('%s: No data extracted for text block %s' % (borehole_id, asterisk_line_idx))
     return df_data, depth_increment, depth_bedrock
 
