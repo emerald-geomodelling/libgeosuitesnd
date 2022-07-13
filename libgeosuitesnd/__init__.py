@@ -94,12 +94,11 @@ def parse_string_data_column(df_data, raw_data_nestedlist,n_data_col):
                 if isinstance(flags_affected, pd.Series):
                     line_flags[flags_affected['name']] = flags_affected['value']
                 else:
-                    line_flags.update({zip( flags_affected['name'], flags_affected['value'])})
+                    line_flags.update(dict(zip( flags_affected['name'].values, flags_affected['value'].values)))
 
 
         if line_flags.get("depth_bedrock", 0) and depth_bedrock is None:
             depth_bedrock = df_data.depth[count]
-
         for key, value in line_flags.items():
             if key != "depth_bedrock":
                 if key not in df_data.columns:
@@ -112,7 +111,7 @@ def parse_string_data_column(df_data, raw_data_nestedlist,n_data_col):
         if flag != "depth_bedrock":
             df_data[flag].replace(to_replace=-1, method='ffill', inplace=True)
             df_data.loc[df_data[flag] == -1, flag] = 0
-        
+    
     return df_data, depth_bedrock
 
 def parse_borehole_data(data, method_code, asterisk_lines,asterisk_line_idx, borehole_id):
