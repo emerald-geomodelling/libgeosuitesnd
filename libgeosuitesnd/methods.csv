@@ -1,5 +1,5 @@
 code,name,columns,flags,comment
-7,cpt,"depth,feed_trust_force,pore_pressure,friction,pressure,resistivity",,
+7,cpt,"depth,feed_thrust_force,pore_pressure,friction,pressure,resistivity",,
 21,rotary,,,
 22,simple,,,
 23,rotary_pressure_sounding,"depth,feed_thrust_force","extra_spin,flushing,pumping,ramming",
