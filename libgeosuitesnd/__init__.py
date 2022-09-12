@@ -5,7 +5,6 @@ import datetime
 import time
 import pandas as pd
 import warnings
-from scipy.stats import linregress
 import zipfile
 import codecs
 import os
