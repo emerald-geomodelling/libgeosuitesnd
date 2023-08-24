@@ -5,7 +5,7 @@ import os
 
 setuptools.setup(
     name='libgeosuitesnd',
-    version='0.0.9',
+    version='0.0.10',
     description='Parser for the GeoSuite<tm> SND export format',
     long_description="""Parser for the GeoSuite<tm> SND export format""",
     long_description_content_type="text/markdown",
