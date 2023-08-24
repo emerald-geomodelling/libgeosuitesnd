@@ -147,6 +147,14 @@ def parse_borehole_data(data, method_code, asterisk_lines,asterisk_line_idx, bor
         logger.info('%s: No data extracted for text block %s' % (borehole_id, asterisk_line_idx))
     return df_data, depth_increment, depth_bedrock
 
+def fix_duplicate_investigation_points(borehole_id, res):
+    suffix_int = 0
+    for entry in res:
+        for main in entry['main']:
+            main['investigation_point'] = f'{borehole_id}-{suffix_int}'
+            suffix_int += 1
+
+
 def parse(input_filename, borehole_id=None):
     if borehole_id is None:
         if isinstance(input_filename, str):
@@ -223,5 +231,8 @@ def parse(input_filename, borehole_id=None):
                 "input_filename": input_filename.name
             }],
         }]
+
+    if len(res)>1:
+        fix_duplicate_investigation_points(borehole_id, res)
 
     return res
