@@ -10,7 +10,7 @@ import codecs
 import os
 import io
 import logging
-import pkg_resources
+from importlib.resources import files
 
 logger = logging.getLogger(__name__)
 
@@ -21,13 +21,13 @@ def _read_csv(f):
     return pd.read_csv(f, na_values=na_values, keep_default_na=False).set_index("code")
 
 
-with pkg_resources.resource_stream("libgeosuitesnd", "methods.csv") as f:
+with files("libgeosuitesnd").joinpath("methods.csv").open("rb") as f:
     methods = _read_csv(f)
     method_by_code = methods["name"]
-with pkg_resources.resource_stream("libgeosuitesnd", "stop_reasons.csv") as f:
+with files("libgeosuitesnd").joinpath("stop_reasons.csv").open("rb") as f:
     stop_reasons = _read_csv(f)
     stop_reason_by_code = stop_reasons["name"]
-with pkg_resources.resource_stream("libgeosuitesnd", "flags.csv") as f:
+with files("libgeosuitesnd").joinpath("flags.csv").open("rb") as f:
     flags = _read_csv(f)
 
 snd_columns_by_method = {key: value.split(",") for key, value in methods["columns"].to_dict().items() if isinstance(value, str)}
