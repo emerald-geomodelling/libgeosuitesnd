@@ -108,8 +108,8 @@ def parse_string_data_column(df_data, raw_data_nestedlist,n_data_col):
 
     for flag in flags["name"].unique():
         if flag != "depth_bedrock":
-            df_data[flag].replace(to_replace=-1, method='ffill', inplace=True)
-            df_data.loc[df_data[flag] == -1, flag] = 0
+            df_data[flag] = df_data[flag].replace(-1, np.nan).ffill()
+            df_data.loc[df_data[flag].isna(), flag] = 0
     
     return df_data, depth_bedrock
 
